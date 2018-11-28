@@ -1,0 +1,47 @@
+{
+  "name": "pixi-matter",
+  "version": "0.0.0",
+  "description": "Project setup to hack on pixijs apps with as little transpilation as possible.",
+  "main": "pixi-matter.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "start:server": "http-server -p 1235 --cors=*",
+    "build": "parcel build index.html"
+  },
+  "browserslist": {
+    "development": [
+      "last 1 chrome version"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thlorenz/pixi-matter.git"
+  },
+  "homepage": "https://github.com/thlorenz/pixi-matter",
+  "dependencies": {
+    "pixi.js": "~4.8.2"
+  },
+  "devDependencies": {
+    "@types/matter-js": "~0.10.2",
+    "@types/node": "~10.12.10",
+    "@types/pixi.js": "~4.8.3",
+    "cssnano": "~4.1.7",
+    "http-server": "~0.11.1",
+    "matter-js": "~0.14.2",
+    "parcel-bundler": "~1.10.3",
+    "typescript": "~3.1.6"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Thorsten Lorenz",
+    "email": "thlorenz@gmx.de",
+    "url": "http://thlorenz.com"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/thlorenz/pixi-matter/blob/master/LICENSE"
+  },
+  "engine": {
+    "node": ">=8"
+  }
+}
