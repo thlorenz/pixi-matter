@@ -1,4 +1,5 @@
 import * as P from 'pixi.js'
+import Viewport from 'pixi-viewport'
 import {
   Bodies,
   Body,
@@ -27,7 +28,7 @@ abstract class GameObject implements IGameObject {
   _body: Body
   _graphics: P.Graphics
 
-  constructor(body : Body, graphics = new P.Graphics() ) {
+  constructor(body: Body, graphics = new P.Graphics()) {
     this._body = body
     this._graphics = graphics
   }
@@ -55,7 +56,7 @@ class Box extends GameObject {
     y: number,
     width: number,
     height: number,
-    graphicsOptions : IGraphicsOptions,
+    graphicsOptions: IGraphicsOptions,
     bodyOptions: IChamferableBodyDefinition = {}
   ) {
     super(Bodies.rectangle(x, y, width, height, bodyOptions))
@@ -90,7 +91,7 @@ class Circle extends GameObject {
     x: number,
     y: number,
     radius: number,
-    graphicsOptions : IGraphicsOptions,
+    graphicsOptions: IGraphicsOptions,
     bodyOptions: IChamferableBodyDefinition = {}
   ) {
     super(Bodies.circle(x, y, radius, bodyOptions))
@@ -148,16 +149,26 @@ export default class Game {
   _engine: Engine
   _world: World
   _scene: Scene
+  _viewport: Viewport
 
   static CanvasWidth: number
   static CanvasHeight: number
+  static ViewportWidth: number
+  static ViewportHeight: number
   static FPS: number = 60
 
   constructor(app: P.Application, engine: Engine) {
     this._app = app
     this._engine = engine
     this._world = engine.world
-    this._scene = new Scene(engine.world, app.stage)
+    this._viewport = new Viewport({
+      screenWidth: Game.ViewportWidth,
+      screenHeight: Game.ViewportHeight,
+      worldWidth: Game.CanvasWidth,
+      worldHeight: Game.CanvasHeight
+    })
+    app.stage.addChild(this._viewport)
+    this._scene = new Scene(engine.world, this._viewport)
     this._bind()
 
     this._buildWorld()
@@ -169,16 +180,20 @@ export default class Game {
 
   _buildWorld() {
     const ground = new Box(
-      Game.CanvasWidth / 2, Game.CanvasHeight - 10,
+      Game.CanvasWidth / 2, Game.CanvasHeight - 100,
       Game.CanvasWidth, 10,
       { color: 0xaaaaaa },
       { isStatic: true }
     )
-    const box1 = new Box(115, 0, 30, 20, { color: 0xff0000 })
-    const box2 = new Box(155, 0, 30, 20, { color: 0x0000ff })
-    const box3 = new Box(120, 200, 80, 80, { color: 0x00ff00 }, { angle: Math.PI / 6 })
-    const circle = new Circle(140, 10, 50, { color: 0x0000ff })
-    this._scene.add([ ground, box1, box2, box3, circle ])
+    const box1 = new Box(215, 0, 30, 20, { color: 0xff0000 })
+    const box2 = new Box(255, 0, 30, 20, { color: 0x0000ff })
+    const box3 = new Box(220, 200, 80, 80, { color: 0x00ff00 }, { angle: Math.PI / 6 })
+    const box4 = new Box(300, 10, 100, 100, { color: 0xaaaaaa }, { angle: Math.PI / 16, isStatic: true  })
+    const box5 = new Box(190, Game.CanvasHeight / 2, 100, 100, { color: 0xaaaaaa }, { angle: Math.PI / 16, isStatic: true  })
+    const circle = new Circle(240, 10, 50, { color: 0x0000ff })
+
+    this._viewport.follow(circle.graphics, { radius: 150 })
+    this._scene.add([ground, box1, box2, box3, box4, box5, circle])
   }
 
   start() {

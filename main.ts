@@ -5,34 +5,34 @@ import Game from './lib/game'
 
 window.addEventListener('DOMContentLoaded', initGame)
 
-function removeExistingGame() : void {
+function removeExistingGame(): void {
   const els = document.body.children
   if (els.length > 0) document.body.removeChild(els.item(0) as Node)
 }
 
-const CANVAS_WIDTH   = 640 
-const CANVAS_HEIGHT  = 480 
-Game.CanvasWidth = CANVAS_WIDTH
-Game.CanvasHeight = CANVAS_HEIGHT
+Game.CanvasWidth = 2000
+Game.CanvasHeight = 2000 
+Game.ViewportWidth = 640
+Game.ViewportHeight = 480
 
-function init() : P.Application {
+function init(): P.Application {
   removeExistingGame()
   const app = new P.Application(
-      CANVAS_WIDTH
-    , CANVAS_HEIGHT
-    , { backgroundColor: 0x222222 }
+    Game.ViewportWidth,
+    Game.ViewportHeight,
+    { backgroundColor: 0x222222 }
   )
   document.body.appendChild(app.view)
   return app
 }
 
-function initGame() : void {
+function initGame(): void {
   const app = init()
   const engine = Engine.create()
 
   const game = new Game(app, engine)
   game.start()
-  // game.debugRender()
+  game.debugRender()
 }
 
 // @ts-ignore
